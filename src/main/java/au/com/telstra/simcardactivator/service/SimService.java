@@ -17,7 +17,7 @@ public class SimService {
 
     private SimCardRepo repo;
     private final RestTemplate restTemplate = new RestTemplate();
-    private static final String Service_URL = "http://localhost:8444/actuate";
+    private static final String SERVICE_URL = "http://localhost:8444/actuate";
 
     public SimService(SimCardRepo repo){
         this.repo = repo;
@@ -37,7 +37,7 @@ public class SimService {
         header.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(activeRequest, header);
 
-        ResponseEntity<Map> response = restTemplate.exchange(Service_URL, HttpMethod.POST, requestEntity,Map.class);
+        ResponseEntity<Map> response = restTemplate.exchange(SERVICE_URL, HttpMethod.POST, requestEntity,Map.class);
 
         boolean result = response.getBody() != null && Boolean.TRUE.equals(response.getBody().get("success"));
 

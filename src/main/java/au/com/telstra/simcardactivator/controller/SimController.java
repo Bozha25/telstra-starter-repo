@@ -21,7 +21,7 @@ public class SimController {
     }
 
     @PostMapping("/activate")
-    public ResponseEntity<Boolean> ActiveSim(@RequestBody SimRequest request){
+    public ResponseEntity<Boolean> activeSim(@RequestBody SimRequest request){
 
         Boolean result = simService.ActiveSimCard(request);
 
@@ -33,19 +33,19 @@ public class SimController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SimCard>> GetAllSims(){
+    public ResponseEntity<List<SimCard>> getAllSims(){
         List<SimCard> simCards = simService.GetAllSimCard();
         return ResponseEntity.ok(simCards);
     }
 
     @GetMapping("/{simCardId}")
-    public ResponseEntity<SimCardDTO> GetSimCardById(@PathVariable Long simCardId){
+    public ResponseEntity<SimCardDTO> getSimCardById(@PathVariable Long simCardId){
         SimCardDTO simCardDto = simService.GetSimCardById(simCardId);
         return ResponseEntity.ok(simCardDto);
     }
 
     @GetMapping("/status/{iccid}")
-    public ResponseEntity<Map> GetStatusById(@PathVariable String iccid){
+    public ResponseEntity<Map<String, String>> getStatusById(@PathVariable String iccid){
         Map<String, String> status = simService.GetStatusById(iccid);
         return ResponseEntity.ok(status);
     }
