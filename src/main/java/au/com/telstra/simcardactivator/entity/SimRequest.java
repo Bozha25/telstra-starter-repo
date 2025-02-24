@@ -1,4 +1,6 @@
-package au.com.telstra.simcardactivator;
+package au.com.telstra.simcardactivator.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class SimRequest {
     public String iccid;
