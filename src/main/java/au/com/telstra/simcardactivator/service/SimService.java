@@ -3,6 +3,7 @@ package au.com.telstra.simcardactivator.service;
 import au.com.telstra.simcardactivator.entity.SimCard;
 import au.com.telstra.simcardactivator.entity.SimCardDTO;
 import au.com.telstra.simcardactivator.entity.SimRequest;
+import au.com.telstra.simcardactivator.exception.CustomException;
 import au.com.telstra.simcardactivator.repository.SimCardRepo;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,6 @@ public class SimService {
 
         if(UniqueSimCardByIccid(request.iccid)){
             SimCard simCard = new SimCard(request.iccid, request.customerEmail, result);
-            //System.out.println(result);
-            //System.out.println(simCard);
             repo.save(simCard);
         }
 
@@ -63,7 +62,7 @@ public class SimService {
             SimCard simCard = simCardOptional.get();
             return new SimCardDTO(simCard.getIccid(), simCard.getCustomerEmail(), simCard.getActive());
         }else{
-            throw new RuntimeException("SIM card with ID not found");
+            throw new CustomException("SIM card with ID not found");
         }
     }
 
@@ -76,14 +75,14 @@ public class SimService {
                 return Map.of("status", "inactive");
             }
         }else{
-            throw new RuntimeException("SIM card with ICCID not found");
+            throw new CustomException("SIM card with ICCID not found");
         }
     }
 
     private Boolean UniqueSimCardByIccid(String iccid){
         Optional<SimCard> simCardOptional  = repo.findSimCardByIccid(iccid);
         if(simCardOptional.isPresent()){
-            throw new RuntimeException("SIM card with ICCID already exist.");
+            throw new CustomException("SIM card with ICCID already exist.");
         }
 
         return true;
