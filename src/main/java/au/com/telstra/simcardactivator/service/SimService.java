@@ -41,10 +41,12 @@ public class SimService {
 
         boolean result = response.getBody() != null && Boolean.TRUE.equals(response.getBody().get("success"));
 
-        SimCard simCard = new SimCard(request.iccid, request.customerEmail, result);
-        //System.out.println(result);
-        //System.out.println(simCard);
-        repo.save(simCard);
+        if(UniqueSimCardByIccid(request.iccid)){
+            SimCard simCard = new SimCard(request.iccid, request.customerEmail, result);
+            //System.out.println(result);
+            //System.out.println(simCard);
+            repo.save(simCard);
+        }
 
         return result;
     }
@@ -63,5 +65,27 @@ public class SimService {
         }else{
             throw new RuntimeException("SIM card with ID not found");
         }
+    }
+
+    public Map<String, String> GetStatusById(String iccid){
+        Optional<SimCard> simCardOptional  = repo.findSimCardByIccid(iccid);
+        if(simCardOptional.isPresent()){
+            if(simCardOptional.get().getActive()){
+                return Map.of("status", "active");
+            }else{
+                return Map.of("status", "inactive");
+            }
+        }else{
+            throw new RuntimeException("SIM card with ICCID not found");
+        }
+    }
+
+    private Boolean UniqueSimCardByIccid(String iccid){
+        Optional<SimCard> simCardOptional  = repo.findSimCardByIccid(iccid);
+        if(simCardOptional.isPresent()){
+            throw new RuntimeException("SIM card with ICCID already exist.");
+        }
+
+        return true;
     }
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface SimCardRepo extends CrudRepository<SimCard, Long> {
     Optional<SimCard> findById(Long id);
+    Optional<SimCard> findSimCardByIccid(String iccid);
 }

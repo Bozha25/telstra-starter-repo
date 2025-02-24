@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sim")
@@ -41,5 +42,11 @@ public class SimController {
     public ResponseEntity<SimCardDTO> GetSimCardById(@PathVariable Long simCardId){
         SimCardDTO simCardDto = simService.GetSimCardById(simCardId);
         return ResponseEntity.ok(simCardDto);
+    }
+
+    @GetMapping("/status/{iccid}")
+    public ResponseEntity<Map> GetStatusById(@PathVariable String iccid){
+        Map<String, String> status = simService.GetStatusById(iccid);
+        return ResponseEntity.ok(status);
     }
 }
