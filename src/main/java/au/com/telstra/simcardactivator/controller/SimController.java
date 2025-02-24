@@ -23,30 +23,30 @@ public class SimController {
     @PostMapping("/activate")
     public ResponseEntity<Boolean> activeSim(@RequestBody SimRequest request){
 
-        Boolean result = simService.ActiveSimCard(request);
+        boolean result = simService.activeSimCard(request);
 
         if(!result){
-            return ResponseEntity.badRequest().body(result);
+            return ResponseEntity.badRequest().body(false);
         }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<SimCard>> getAllSims(){
-        List<SimCard> simCards = simService.GetAllSimCard();
+        List<SimCard> simCards = simService.getAllSimCard();
         return ResponseEntity.ok(simCards);
     }
 
     @GetMapping("/{simCardId}")
     public ResponseEntity<SimCardDTO> getSimCardById(@PathVariable Long simCardId){
-        SimCardDTO simCardDto = simService.GetSimCardById(simCardId);
+        SimCardDTO simCardDto = simService.getSimCardById(simCardId);
         return ResponseEntity.ok(simCardDto);
     }
 
     @GetMapping("/status/{iccid}")
     public ResponseEntity<Map<String, String>> getStatusById(@PathVariable String iccid){
-        Map<String, String> status = simService.GetStatusById(iccid);
+        Map<String, String> status = simService.getStatusById(iccid);
         return ResponseEntity.ok(status);
     }
 }

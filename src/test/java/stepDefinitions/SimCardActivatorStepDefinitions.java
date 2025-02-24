@@ -23,8 +23,8 @@ import java.util.Map;
 public class SimCardActivatorStepDefinitions {
 
 
-    private final String BASE_URL = "/api/sim";
-    private final String EMAIL = "test@email.com";
+    private static final String BASE_URL = "/api/sim";
+    private static final String EMAIL = "test@email.com";
     private ResponseEntity<String> response;
     private String lastActivatedIccid;
 
