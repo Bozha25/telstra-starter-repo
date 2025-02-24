@@ -1,29 +1,26 @@
-package au.com.telstra.simcardactivator;
+package au.com.telstra.simcardactivator.service;
 
+import au.com.telstra.simcardactivator.entity.SimCard;
+import au.com.telstra.simcardactivator.entity.SimRequest;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/sim")
-public class SimController {
+@Service
+public class SimService {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String Service_URL = "http://localhost:8444/actuate";
 
-    @PostMapping("/activate")
-    public ResponseEntity<Boolean> activeSim(@RequestBody SimRequest request){
+    public Boolean ActiveSimCard(SimRequest request){
 
         String iccid = request.iccid;
         String customerEmail = request.customerEmail;
 
         if(iccid == null || customerEmail == null){
-            return ResponseEntity.badRequest().body(false);
+            return false;
         }
 
         Map<String, String> activeRequest = Map.of("iccid", iccid);
@@ -35,8 +32,11 @@ public class SimController {
 
         boolean result = response.getBody() != null && Boolean.TRUE.equals(response.getBody().get("success"));
 
-        System.out.println(result);
+        SimCard simCard = new SimCard(request.iccid, request.customerEmail, result);
+        //System.out.println(result);
+        System.out.println(simCard);
 
-        return ResponseEntity.ok(result);
+
+        return result;
     }
 }
