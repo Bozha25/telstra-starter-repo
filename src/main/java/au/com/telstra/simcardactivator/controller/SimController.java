@@ -1,12 +1,13 @@
 package au.com.telstra.simcardactivator.controller;
 
+import au.com.telstra.simcardactivator.entity.SimCard;
+import au.com.telstra.simcardactivator.entity.SimCardDTO;
 import au.com.telstra.simcardactivator.entity.SimRequest;
 import au.com.telstra.simcardactivator.service.SimService;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/sim")
@@ -19,7 +20,7 @@ public class SimController {
     }
 
     @PostMapping("/activate")
-    public ResponseEntity<Boolean> activeSim(@RequestBody SimRequest request){
+    public ResponseEntity<Boolean> ActiveSim(@RequestBody SimRequest request){
 
         Boolean result = simService.ActiveSimCard(request);
 
@@ -28,5 +29,17 @@ public class SimController {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SimCard>> GetAllSims(){
+        List<SimCard> simCards = simService.GetAllSimCard();
+        return ResponseEntity.ok(simCards);
+    }
+
+    @GetMapping("/{simCardId}")
+    public ResponseEntity<SimCardDTO> GetSimCardById(@PathVariable Long simCardId){
+        SimCardDTO simCardDto = simService.GetSimCardById(simCardId);
+        return ResponseEntity.ok(simCardDto);
     }
 }
